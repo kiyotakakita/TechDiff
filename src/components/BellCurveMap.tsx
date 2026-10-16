@@ -739,7 +739,7 @@ export const BellCurveMap: React.FC<BellCurveMapProps> = ({
                         fontWeight="700"
                         textAnchor="middle"
                       >
-                        ⚡ キャズム直前
+                        ⚡ AI境界領域
                       </text>
                     </g>
                   ) : isTrending ? (
