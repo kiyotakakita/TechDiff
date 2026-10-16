@@ -89,7 +89,7 @@ export const Header: React.FC<HeaderProps> = ({
               <div>
                 <div className="flex items-center gap-2.5">
                   <h1 className="text-xl font-bold tracking-tight text-white flex items-center gap-1.5">
-                    LexiCurve
+                    TechDiff
                     <span className="text-[10px] uppercase font-mono tracking-widest px-1.5 py-0.5 rounded bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">
                       v1.0
                     </span>
@@ -111,7 +111,7 @@ export const Header: React.FC<HeaderProps> = ({
                 title="🔥 最新の急上昇ワードをAIスキャン"
               >
                 <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400 animate-pulse" />
-                <span>AI急上昇</span>
+                <span>AI差分候補</span>
               </button>
 
               <button
@@ -156,7 +156,7 @@ export const Header: React.FC<HeaderProps> = ({
                   type="text"
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
-                  placeholder="新造語・バズワードを分析（例: Vibe Coding, MCP...）"
+                  placeholder="技術・基礎概念の差分を分析（例: GitHub Actions, 正規表現, SQL設計...）"
                   disabled={isAnalyzing}
                   className="w-full pl-10 pr-24 py-2 text-sm bg-slate-900/90 border border-slate-700/70 rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all shadow-inner disabled:opacity-50"
                 />

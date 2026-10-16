@@ -229,14 +229,14 @@ export const BellCurveMap: React.FC<BellCurveMapProps> = ({
           <div className="flex items-center gap-2">
             <h2 className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-              イノベーター理論 ベルカーブ（浸透度マップ）
+              知識の不変度 ＆ AI変革インデックス（5段階・差分体系マップ）
             </h2>
             <span className="text-xs text-slate-400 font-mono bg-slate-800/80 px-2 py-0.5 rounded-full border border-slate-700/50">
               表示中: {filteredTerms.length} 概念
             </span>
           </div>
           <p className="text-xs text-slate-400 mt-0.5">
-            各概念の現在地をプロット。ピンをクリックすると下部に「源流ジャーニー」を展開します。
+            左ほど「手作業がAIに代替された領域」、右ほど「10年後も変わらない不変の基礎」。ピンをタップで差分詳細とアクセプト画面へ。
           </p>
         </div>
 
@@ -244,11 +244,11 @@ export const BellCurveMap: React.FC<BellCurveMapProps> = ({
         <div className="flex items-center gap-2 flex-wrap text-[11px]">
           <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-cyan-950/40 border border-cyan-500/30 text-cyan-300">
             <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
-            <span>イノベーター 2.5%</span>
+            <span>1. 手順の消滅 (AI丸投げ)</span>
           </div>
           <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-violet-950/40 border border-violet-500/30 text-violet-300">
             <span className="w-2 h-2 rounded-full bg-violet-400"></span>
-            <span>アーリーアダプター 13.5%</span>
+            <span>2. 作法の逆転 (役割180°変化)</span>
           </div>
           <button
             onClick={onShowChasmInfo}
@@ -256,19 +256,19 @@ export const BellCurveMap: React.FC<BellCurveMapProps> = ({
             title="キャズム（死の谷）をクリックして詳細を見る"
           >
             <AlertTriangle className="w-3 h-3 text-rose-400 animate-pulse" />
-            <span className="font-bold">キャズムの溝 (Chasm)</span>
+            <span className="font-bold">AI代替と人間領域の境界線</span>
           </button>
           <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-emerald-950/40 border border-emerald-500/30 text-emerald-300">
             <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-            <span>アーリーマジョリティ 34%</span>
+            <span>3. UI・仕様の流動 (迷子注意)</span>
           </div>
           <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-amber-950/40 border border-amber-500/30 text-amber-300">
             <span className="w-2 h-2 rounded-full bg-amber-400"></span>
-            <span>レイトマジョリティ 34%</span>
+            <span>4. 基礎の重要度倍増 (人間の急所)</span>
           </div>
           <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-slate-900/80 border border-slate-700/40 text-slate-400">
             <span className="w-2 h-2 rounded-full bg-slate-400"></span>
-            <span>ラガード 16%</span>
+            <span>5. 不変の原理 (10年後も不変)</span>
           </div>
         </div>
       </div>
@@ -496,7 +496,7 @@ export const BellCurveMap: React.FC<BellCurveMapProps> = ({
                 fontFamily="system-ui, sans-serif"
                 textAnchor="middle"
               >
-                ⚠ キャズムの溝 (16%)
+                ⚠ AIと人間の境界線
               </text>
             </g>
           </g>
@@ -896,7 +896,7 @@ export const BellCurveMap: React.FC<BellCurveMapProps> = ({
                 {hoveredTerm.summary}
               </p>
               <div className="mt-2.5 pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
-                <span>通じる度: <strong className="text-cyan-300">{hoveredTerm.insights.comprehensionScore}%</strong></span>
+                <span>基礎重要度: <strong className="text-cyan-300">{hoveredTerm.insights.comprehensionScore}%</strong></span>
                 <span>誕生: <strong className="text-slate-200">{hoveredTerm.firstAppearedYear}年</strong></span>
                 <div className="flex items-center gap-2">
                   {onOpenDetailModal && (
@@ -938,12 +938,12 @@ export const BellCurveMap: React.FC<BellCurveMapProps> = ({
           <span>
             選択中: <strong className="text-white">{selectedTerm?.name ?? 'なし'}</strong>
             {selectedTerm?.nearChasm && (
-              <span className="ml-2 text-rose-400 font-semibold">（現在キャズム直面中）</span>
+              <span className="ml-2 text-rose-400 font-semibold">（AIと人間の境界線領域）</span>
             )}
           </span>
         </div>
         <div className="flex items-center gap-3 text-slate-400 text-[11px]">
-          <span>※ イノベーター理論（E.M.ロジャーズ）およびキャズム理論（G.A.ムーア）に基づく浸透度モデル</span>
+          <span>※ TechDiff独自索引体系：用語自体の辞書解説は外部コモンズ（Wikipedia・MDN等）へ委譲し、AI時代の差分のみを索引化</span>
         </div>
       </div>
     </div>

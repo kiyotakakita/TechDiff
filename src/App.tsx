@@ -35,8 +35,8 @@ import {
   getClientGeminiModel 
 } from './services/geminiClient';
 
-const LOCAL_STORAGE_WATCHLIST_KEY = 'lexicurve_watchlist_ids_v1';
-const LOCAL_STORAGE_WORDS_KEY = 'lexicurve_all_words_v2';
+const LOCAL_STORAGE_WATCHLIST_KEY = 'techdiff_v2_watchlist_ids_v1';
+const LOCAL_STORAGE_WORDS_KEY = 'techdiff_v2_all_words_v2';
 
 export default function App() {
   // 1. Unified words state persisted in LocalStorage
@@ -50,7 +50,7 @@ export default function App() {
         }
       }
       // Migrate from old custom terms if present
-      const legacyCustom = localStorage.getItem('lexicurve_custom_terms_v1');
+      const legacyCustom = localStorage.getItem('techdiff_v2_custom_terms_v1');
       if (legacyCustom) {
         const parsedCustom = JSON.parse(legacyCustom);
         if (Array.isArray(parsedCustom) && parsedCustom.length > 0) {
