@@ -1,20 +1,20 @@
-import { Category, StageInfo, StageId, CategoryId } from '../types';
+import { Category, StageInfo, StageId } from '../types';
 
 export const CATEGORIES: Category[] = [
-  { id: 'all', name: 'すべて', iconName: 'Compass', color: 'indigo' },
-  { id: 'productivity', name: '生産性・ライフハック', iconName: 'Zap', color: 'emerald' },
-  { id: 'ai', name: 'AI・テクノロジー', iconName: 'Cpu', color: 'cyan' },
-  { id: 'business', name: 'ビジネス・働き方', iconName: 'Briefcase', color: 'amber' },
-  { id: 'culture', name: 'カルチャー・若者言葉', iconName: 'Sparkles', color: 'pink' },
+  { id: 'all', name: 'すべての索引', iconName: 'Compass', color: 'indigo' },
+  { id: 'ai', name: '開発・エンジニアリング', iconName: 'Cpu', color: 'cyan' },
+  { id: 'productivity', name: 'ツール操作・ワークフロー', iconName: 'Zap', color: 'emerald' },
+  { id: 'business', name: '設計・マネジメント', iconName: 'Briefcase', color: 'amber' },
+  { id: 'culture', name: '思考法・リサーチ', iconName: 'Sparkles', color: 'pink' },
 ];
 
 export const STAGES: Record<StageId, StageInfo> = {
   innovator: {
     id: 'innovator',
-    name: 'イノベーター',
-    nameEn: 'Innovators',
-    percentage: '2.5%',
-    description: '冒険的で技術への好奇心が極めて高い層。未完成でも自ら試す実験者たち。',
+    name: '手順の消滅',
+    nameEn: 'Automated',
+    percentage: 'AI丸投げ',
+    description: '概念（基礎）の理解は必要だが、人間が手作業で書く・作る手順そのものはAIに代替された領域。',
     color: '#06b6d4', // Cyan
     borderColor: 'rgba(6, 182, 212, 0.4)',
     bgGradient: 'from-cyan-500/15 to-transparent',
@@ -22,10 +22,10 @@ export const STAGES: Record<StageId, StageInfo> = {
   },
   early_adopter: {
     id: 'early_adopter',
-    name: 'アーリーアダプター',
-    nameEn: 'Early Adopters',
-    percentage: '13.5%',
-    description: 'オピニオンリーダー層。実用性と先進性を見極め、コミュニティに発信する。',
+    name: '作法の逆転',
+    nameEn: 'Inverted',
+    percentage: '役割180°変化',
+    description: '「0から1を手作りする」から「AIが出した100を検証・軌道修正する」へと人間の役割が逆転した領域。',
     color: '#8b5cf6', // Violet
     borderColor: 'rgba(139, 92, 246, 0.4)',
     bgGradient: 'from-violet-500/15 to-transparent',
@@ -33,10 +33,10 @@ export const STAGES: Record<StageId, StageInfo> = {
   },
   early_majority: {
     id: 'early_majority',
-    name: 'アーリーマジョリティ',
-    nameEn: 'Early Majority',
-    percentage: '34.0%',
-    description: '慎重派の実用主義者。キャズムを越えて周囲が使い始めた確信を得てから導入。',
+    name: 'UI・仕様の流動',
+    nameEn: 'Volatile UI',
+    percentage: '迷子注意',
+    description: '裏側の基礎概念は同じなのに、ツールの画面配置や設定作法が頻繁に変わって迷子になりやすい領域。',
     color: '#10b981', // Emerald
     borderColor: 'rgba(16, 185, 129, 0.4)',
     bgGradient: 'from-emerald-500/15 to-transparent',
@@ -44,10 +44,10 @@ export const STAGES: Record<StageId, StageInfo> = {
   },
   late_majority: {
     id: 'late_majority',
-    name: 'レイトマジョリティ',
-    nameEn: 'Late Majority',
-    percentage: '34.0%',
-    description: '保守的なフォロワー層。業界標準や世間の過半数が採用して初めて定着。',
+    name: '基礎の重要度倍増',
+    nameEn: 'Amplified Core',
+    percentage: '人間が握る急所',
+    description: 'AIが量産できるようになった結果、むしろ人間側の「基礎理解・設計力」がないと破綻するため価値が跳ね上がった領域。',
     color: '#f59e0b', // Amber
     borderColor: 'rgba(245, 158, 11, 0.4)',
     bgGradient: 'from-amber-500/15 to-transparent',
@@ -55,10 +55,10 @@ export const STAGES: Record<StageId, StageInfo> = {
   },
   laggard: {
     id: 'laggard',
-    name: 'ラガード',
-    nameEn: 'Laggards',
-    percentage: '16.0%',
-    description: '伝統派・変化に極めて懐疑的な層。生活インフラとして不可避になってから受容。',
+    name: '不変の原理',
+    nameEn: 'Immutable',
+    percentage: '10年後も不変',
+    description: 'AI時代になろうがツールが変わろうが、一切古びない絶対的な基礎理論・メンタルモデル。',
     color: '#64748b', // Slate
     borderColor: 'rgba(100, 116, 139, 0.4)',
     bgGradient: 'from-slate-500/15 to-transparent',
@@ -66,5 +66,5 @@ export const STAGES: Record<StageId, StageInfo> = {
   },
 };
 
-// Chasm boundary position (X % on the curve)
+// Boundary position between "AI-delegated execution" and "Human-held core"
 export const CHASM_X_PERCENT = 35.5;
