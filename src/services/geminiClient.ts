@@ -33,15 +33,10 @@ export const PRESET_GEMINI_MODELS: GeminiModelOption[] = [
 const LOCAL_STORAGE_KEY = 'lexicurve_gemini_api_key';
 const LOCAL_STORAGE_MODEL_KEY = 'lexicurve_gemini_selected_model';
 
-/**
- * Retrieves the Gemini API key from import.meta.env or localStorage
- */
 export function getClientGeminiApiKey(): string {
-  // 1. Vite environment variable
   const envKey = (import.meta.env.VITE_GEMINI_API_KEY as string | undefined)?.trim();
   if (envKey) return envKey;
 
-  // 2. Local storage if the user saved an API key in the browser
   try {
     const localKey = localStorage.getItem(LOCAL_STORAGE_KEY)?.trim();
     if (localKey) return localKey;
@@ -52,9 +47,6 @@ export function getClientGeminiApiKey(): string {
   return '';
 }
 
-/**
- * Sets or clears the local Gemini API key
- */
 export function setClientGeminiApiKey(key: string) {
   try {
     if (key.trim()) {
@@ -67,9 +59,6 @@ export function setClientGeminiApiKey(key: string) {
   }
 }
 
-/**
- * Gets the selected Gemini model ID from localStorage or fallback
- */
 export function getClientGeminiModel(): string {
   try {
     const localModel = localStorage.getItem(LOCAL_STORAGE_MODEL_KEY)?.trim();
@@ -83,9 +72,6 @@ export function getClientGeminiModel(): string {
   return 'gemini-flash-latest';
 }
 
-/**
- * Sets the selected Gemini model ID to localStorage
- */
 export function setClientGeminiModel(modelId: string) {
   try {
     if (modelId.trim()) {
@@ -96,99 +82,94 @@ export function setClientGeminiModel(modelId: string) {
   }
 }
 
-const ANALYSIS_PROMPT_TEMPLATE = (word: string) => `あなたは新造語・バズワード・テクノロジー用語の社会学的浸透度・イノベーター理論・語源変遷の専門家アナリストです。
-入力された単語「${word}」について、客観的な事実・Web上の言及トレンドに基づき、以下のJSON形式で分析結果を出力してください。
+const ANALYSIS_PROMPT_TEMPLATE = (word: string) => `あなたは技術概念・業務知識の「時代を超えて変わらない基礎（不変の原理）」と「AI時代によって古くなった情報・新しく変わった応用（差分）」を体系化する『技術差分辞典（TechDiff）』の編纂AIです。
+入力されたトピック・単語「${word}」について、基礎知識とAI時代の変化の差分を分析し、以下のJSON形式で出力してください。
 
 【出力要件】
 必ず以下のキーを持つ有効なJSONのみを出力してください（Markdownのバッククォート \`\`\`json も不要です）：
 {
-  "name": "単語の正式名称（例: ${word}）",
-  "reading": "読み方（カタカナまたは英語）",
+  "name": "トピック・技術の正式名称（例: ${word}）",
+  "reading": "読み方または英語表記",
   "category": "productivity" | "ai" | "business" | "culture" のいずれか1つ,
   "categoryLabel": "生産性・ライフハック" | "AI・テクノロジー" | "ビジネス・働き方" | "カルチャー・若者言葉" のいずれか,
-  "stage": "innovator" | "early_adopter" | "early_majority" | "late_majority" | "laggard" のいずれか（現在の日本での普及度）,
-  "stageProgress": 0から100の数値（ベルカーブ上のX座標パーセンテージ。イノベーター: 1〜15, アーリーアダプター: 16〜34, アーリーマジョリティ: 35〜67, レイトマジョリティ: 68〜84, ラガード: 85〜100）,
-  "nearChasm": boolean（stageProgressが12〜25の間、つまりキャズムの溝付近ならtrue、それ以外はfalse）,
-  "summary": "1行の簡潔な解説（50文字以内）",
-  "definition": "概念の厳密な定義（100文字程度）",
-  "firstAppearedYear": 初出年（西暦の整数、例: 2024）,
-  "tags": ["タグ1", "タグ2", "タグ3", "タグ4"],
+  "stage": "innovator" | "early_adopter" | "early_majority" | "late_majority" | "laggard" のいずれか（AIによる変革の進行度。右に行くほど基礎が枯れていて不変性が高い）,
+  "stageProgress": 0から100の数値（1〜30: AIで激変中の最新領域、31〜70: 基礎の上にAI応用が乗る領域、71〜100: 10年後も変わらない普遍の基礎領域）,
+  "nearChasm": boolean（従来のやり方からAI流のやり方へ移行する過渡期ならtrue、それ以外はfalse）,
+  "summary": "「何が不変の基礎で、何がAIで変わったか」の1行要約（50文字以内）",
+  "definition": "この概念の時代を超えた本質的な定義と、AI時代における位置づけ（100文字程度）",
+  "firstAppearedYear": 基礎概念が誕生したおおよその西暦（整数、例: 2005）,
+  "tags": ["不変の基礎", "AI時代の差分", "関連キーワード1", "関連キーワード2"],
   "journey": [
     {
       "phase": "origin",
-      "phaseTitle": "【水源（誕生）】",
-      "year": "誕生の年月（例: 2023年春）",
-      "platform": "発祥元のプラットフォーム・論文・ブログ名",
-      "title": "誕生時の出来事タイトル",
-      "description": "誰がどういう文脈でこの言葉や概念を生み出したか",
-      "keyArtifact": "初出の文献名・論文・ポストの引用"
+      "phaseTitle": "【1. 不変の基礎（Core）】",
+      "year": "普遍の原理",
+      "platform": "基礎理論・メンタルモデル",
+      "title": "絶対に変わらない本質・仕組み",
+      "description": "AIがどれだけ進化しても人間が理解しておくべき基礎原理や仕組みの解説",
+      "keyArtifact": "押さえるべき基礎概念・キーワード"
     },
     {
       "phase": "spread",
-      "phaseTitle": "【合流（拡散）】",
-      "year": "拡散の時期",
-      "platform": "拡散メディア（X, YouTube, Hacker News等）",
-      "title": "海外または初期コミュニティでの拡散タイトル",
-      "description": "どうやって注目を集めコミュニティを越えて広まったか",
-      "keyArtifact": "バイラルした投稿やエビデンス"
+      "phaseTitle": "【2. 従来の定石（Legacy）】",
+      "year": "Pre-AI時代",
+      "platform": "従来のワークフロー・手法",
+      "title": "これまで当たり前だったやり方",
+      "description": "AI普及以前に行われていた手順や、当時のベストプラクティス",
+      "keyArtifact": "従来よく使われていたツールや作法"
     },
     {
       "phase": "border_crossing",
-      "phaseTitle": "【国境越え（翻訳）】",
-      "year": "日本への輸入時期",
-      "platform": "国内メディア（note, Zenn, 書籍, メディア特集等）",
-      "title": "日本語圏へのローカライズと実務での検証",
-      "description": "日本で誰が紹介し、どう解釈されて受け入れられたか",
-      "keyArtifact": "日本での代表的な記事や書籍名"
+      "phaseTitle": "【3. 古くなった情報（Obsolete）】",
+      "year": "AIによる転換点",
+      "platform": "自動化・代替された領域",
+      "title": "今やると非効率になる古い作法",
+      "description": "仕様変更やAIの台頭により、人間が手作業でやる必要がなくなった・陳腐化した知識",
+      "keyArtifact": "手放すべき古い固定観念・アンチパターン"
     },
     {
       "phase": "mainstream",
-      "phaseTitle": "【大河（現在地）】",
-      "year": "2025年〜現在",
-      "platform": "現在の主戦場メディア・実務現場",
-      "title": "現在の浸透状況タイトル",
-      "description": "現在どこまで普及し、どう使われているか",
-      "keyArtifact": "現在の市場レポートやビジネスニュースの引用"
+      "phaseTitle": "【4. AI時代の応用（AI-Era Diff）】",
+      "year": "現在の新標準",
+      "platform": "AIネイティブな実践現場",
+      "title": "基礎×AIの最新ベストプラクティス",
+      "description": "不変の基礎知識を土台にしつつ、AIや最新仕様をどう組み合わせて応用するか",
+      "keyArtifact": "今すぐ実践すべきAI時代のアクション"
     }
   ],
   "insights": {
-    "comprehensionScore": 0から100の整数（一般的な社会人への通じる度スコア）,
-    "daysTraveled": 誕生から現在までの推定日数（整数）,
-    "targetAudience": "現在理解している主なターゲット層（例: 先端AIエンジニア）",
+    "comprehensionScore": 0から100の整数（基礎知識の重要度スコア）,
+    "daysTraveled": 基礎誕生からの推定経過日数（整数）,
+    "targetAudience": "この差分を押さえるべき層（例: 基礎をAI応用に繋げたい開発者）",
     "chasmStatus": "before" | "crossing" | "crossed" | "settled",
-    "recommendedContext": "おすすめの使用シーン（例: 社内Slack、勉強会）",
+    "recommendedContext": "この知識が活きる場面（例: 設計レビュー、トラブルシューティング）",
     "riskLevel": "理解されない" | "意識高いと見られる" | "一般常識" | "今更感"
   },
   "audienceSafety": {
     "executiveClient": {
       "status": "safe" | "caution" | "danger",
-      "statusLabel": "🟢 安全" | "🟡 要言い換え" | "🔴 通じない",
-      "confusionProbability": 0から100の整数（役員・クライアントにキョトンとされる確率%）,
-      "advice": "役員やクライアントに向けて話す際の具体的な注意点と助言"
+      "statusLabel": "🟢 普遍・安全" | "🟡 要アップデート" | "🔴 陳腐化リスク",
+      "confusionProbability": 0から100の整数（古い知識のまま止まっている危険度%）,
+      "advice": "従来の古いやり方に固執せず、どこをAIに任せてどこを人間が握るべきかの助言"
     },
     "techInternal": {
       "status": "safe" | "caution" | "danger",
-      "statusLabel": "🟢 通じる（推奨）" | "🟡 要言い換え" | "🔴 注意",
-      "advice": "社内テックチームや実務陣との会話での使い所"
+      "statusLabel": "🟢 必須の基礎" | "🟡 やり方変化" | "🔴 仕様変更注意",
+      "advice": "実務や開発現場において、基礎をどう応用して最新ツールを使いこなすかのアドバイス"
     },
     "paraphraseSuggestion": {
-      "plainTerm": "専門用語を避けた平易な言い換え表現",
-      "exampleSentence": "役員報告やクライアント会議でそのまま使える言い換え例文"
+      "plainTerm": "一言でいう「AI時代の新しい定石」",
+      "exampleSentence": "「昔は〇〇でしたが、基礎の△△さえ押さえれば、今はAIで□□するのが標準です」という形式のまとめ文"
     }
   },
   "semanticShift": {
-    "originalMeaning": "海外コミュニティで生まれた当初の厳密な原義",
-    "originalContext": "提唱された当時の背景や制約",
-    "currentNuance": "日本に輸入されて現在使われているニュアンスや使われ方",
-    "shiftHighlight": "伝言ゲームでどう意味が変化・拡大・あるいは形骸化したかのポイント"
+    "originalMeaning": "【変わらない基礎】時代やツールが変わっても絶対に揺るがない本質的な原理原則",
+    "originalContext": "【古くなった情報】かつては必須だったが、AIや仕様変更で不要・非効率になった知識",
+    "currentNuance": "【AI時代の応用】基礎を理解した上で、AIをレバレッジして最速で成果を出す現在のアプローチ",
+    "shiftHighlight": "【差分の核心】人間が学ぶべき『基礎』と、AIに任せる『作業』の境界線はどこにあるか"
   }
 }`;
 
-/**
- * Low-level HTTP call to Google Gemini generateContent REST API
- * Dynamic endpoint: https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}
- * Throws honest errors containing HTTP status code and raw Google error message.
- */
 async function callGeminiRestApi(prompt: string, modelOverride?: string): Promise<{ text: string; model: string }> {
   const apiKey = getClientGeminiApiKey();
   if (!apiKey) {
@@ -245,10 +226,6 @@ async function callGeminiRestApi(prompt: string, modelOverride?: string): Promis
   return { text, model: selectedModel };
 }
 
-/**
- * Direct browser call to Gemini API to analyze a single term.
- * Absolutely no dummy fallback data is created if the API fails.
- */
 export async function analyzeWordDirect(word: string): Promise<{ term: TermData; model: string }> {
   const query = word.trim();
   const prompt = ANALYSIS_PROMPT_TEMPLATE(query);
@@ -271,21 +248,17 @@ export async function analyzeWordDirect(word: string): Promise<{ term: TermData;
   };
 }
 
-/**
- * Direct browser call to Gemini API to scan trending buzzwords.
- * Absolutely no dummy fallback data is created if the API fails.
- */
 export async function scanTrendingDirect(): Promise<{ terms: TermData[]; model: string }> {
-  const prompt = `あなたはインターネットカルチャー、シリコンバレーの先端テック、生成AI、新世代の生産性・働き方に最も精通した社会言語学・イノベータートレンド分析AIです。
-現在話題沸騰・急浮上している「最新の新造語・バズワード」について、AI、生産性、ビジネス、カルチャーの各分野からバランスよく合計5〜6個の新造語を抽出してください。
+  const prompt = `あなたは技術や業務知識の「変わらない基礎」と「AI時代の最新の応用・差分」を整理する『技術差分辞典』のAIキュレーターです。
+現在、「基礎原理は不変で重要だが、AIの普及や仕様変更によって従来のやり方が古くなり、アプローチが劇的に変化しているトピック」を、AI・開発、生産性、ビジネスなどの分野から合計5〜6個抽出してください。（例: Gitとバージョン管理、エラーデバッグ手法、SQLとDB設計、要件定義、情報検索とリサーチなど）
 
 必ず以下のキーを持つJSON配列（Array）形式のみを出力してください：
 [
   {
-    "name": "単語名（例: Vibe Coding）",
-    "description": "簡潔な説明文",
+    "name": "トピック名（例: デバッグとエラー解決）",
+    "description": "何が不変の基礎で、何がAIで変わったかの簡潔な要約",
     "category": "以下の4つの中から最も適切なものを1つ選択: [生産性・ライフハック, AI・テクノロジー, ビジネス・働き方, カルチャー・若者言葉]",
-    "score": ベルカーブ上の位置（イノベーターなら5〜15、アダプターなら20〜35等の数値0〜100）
+    "score": 知識の不変度とAI変革度のバランス位置（0〜100の数値）
   }
 ]`;
 
@@ -304,15 +277,10 @@ export async function scanTrendingDirect(): Promise<{ terms: TermData[]; model: 
   }
 
   const normalized = parsed.map((item: any) => {
-    // Keys resolution with full fluctuation tolerance:
-    // 単語名: item.name || item.word || item.title || item.term || "新着ワード"
-    // 説明文: item.description || item.explanation || item.summary || ""
-    // カテゴリ: item.category || item.genre || "AI・テクノロジー"
-    // ※単語名に絶対に固定文字列の「トレンドワード」を代入しないでください。
-    const wordName = item?.name || item?.word || item?.title || item?.term || '新着ワード';
+    const wordName = item?.name || item?.word || item?.title || item?.term || '新着トピック';
     const description = item?.description || item?.explanation || item?.summary || item?.definition || '';
     const category = item?.category || item?.genre || 'AI・テクノロジー';
-    const score = item?.score ?? item?.stageProgress ?? item?.position ?? 20;
+    const score = item?.score ?? item?.stageProgress ?? item?.position ?? 50;
 
     const termPayload = {
       ...item,
