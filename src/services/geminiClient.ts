@@ -192,7 +192,7 @@ async function callGeminiRestApi(prompt: string, modelOverride?: string): Promis
         ],
         generationConfig: {
           responseMimeType: 'application/json',
-          temperature: 0.2
+          temperature: 0.7
         }
       })
     });
@@ -249,16 +249,31 @@ export async function analyzeWordDirect(word: string): Promise<{ term: TermData;
 }
 
 export async function scanTrendingDirect(): Promise<{ terms: TermData[]; model: string }> {
+  const lenses = [
+    'Linuxコマンド・シェル操作・パス解決・テキスト処理・正規表現',
+    'HTTP通信・DNS・キャッシュ制御・認証認可(OAuth/JWT/Passkey)・ネットワーク',
+    '状態管理・CSSレイアウト・ブラウザレンダリング・DOM操作・Web標準API',
+    'トランザクション・インデックス設計・JSON/CSV変換・ローカルストレージ',
+    '暗号化・SSH鍵管理・CORS・環境変数とシークレット管理・権限設計',
+    '非同期処理・メモリ管理・文字コード・データ正規化・計算量とボトルネック',
+    'ログ監視・単体テスト設計・CI/CDパイプライン・コンテナ仮想化・ビルド設定',
+    'REST/GraphQL設計・技術ドキュメント・仕様の言語化・トレードオフ判断・依存関係管理'
+  ];
+  const picked = [...lenses].sort(() => 0.5 - Math.random()).slice(0, 2).join(' および ');
+  const seed = Math.floor(Math.random() * 99999);
+
   const prompt = `あなたは技術や業務知識の「変わらない基礎」と「AI時代の最新の応用・差分」を整理する『技術差分辞典』のAIキュレーターです。
-現在、「基礎原理は不変で重要だが、AIの普及や仕様変更によって従来のやり方が古くなり、アプローチが劇的に変化しているトピック」を、AI・開発、生産性、ビジネスなどの分野から合計5〜6個抽出してください。（例: Gitとバージョン管理、エラーデバッグ手法、SQLとDB設計、要件定義、情報検索とリサーチなど）
+[ランダム探索シード: ${seed}]
+今回は特に【 ${picked} 】に関連する領域から、一般的なバズワードではなく「昔からある具体的な基礎概念・仕組み・操作」でありながら、「AIの登場や近年の仕様変更によって人間の関わり方が劇的に変わった項目」を5〜6個、鋭い切り口で抽出してください。
+※毎回異なる多様な具体的項目を出すこと。ありきたりな「デバッグ」「Git」「SQL」といった大雑把な言葉は避け、より具体的で現場感のある基礎用語を選ぶこと。
 
 必ず以下のキーを持つJSON配列（Array）形式のみを出力してください：
 [
   {
-    "name": "トピック名（例: デバッグとエラー解決）",
-    "description": "何が不変の基礎で、何がAIで変わったかの簡潔な要約",
+    "name": "具体的な基礎用語・技術概念名",
+    "description": "何が不変の基礎で、何がAI時代で変わったかの具体的な差分要約",
     "category": "以下の4つの中から最も適切なものを1つ選択: [生産性・ライフハック, AI・テクノロジー, ビジネス・働き方, カルチャー・若者言葉]",
-    "score": 知識の不変度とAI変革度のバランス位置（0〜100の数値）
+    "score": 知識の不変度とAI変革度のバランス位置（8〜92のばらけた数値）
   }
 ]`;
 
